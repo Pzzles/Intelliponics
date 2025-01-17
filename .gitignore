@@ -359,5 +359,76 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
+# Ignore Visual Studio temporary files, build results, and
+# other generated files.
+
+bin/
+obj/
+/*.user
+/*.userosscache
+/*.suo
+*.VC.db
+*.VC.opendb
+
+# Resharper settings
+*.DotSettings.user
+
+# Ignore build outputs
+*.dll
+*.exe
+*.pdb
+*.cache
+*.log
+
+# Ignore NuGet Packages directory
+packages/
+*.nupkg
+*.snupkg
+
+# Ignore compiled JavaScript and TypeScript
+*.min.js
+*.min.css
+*.map
+
+# Ignore generated files
+Generated_Code/
+
+# Ignore publish output
+/Publish/
+/out/
+
+# Ignore web server settings
+*.vs/
+.vscode/
+
+# Ignore IDE-specific files
+/.idea/
+/.idea/
+/_ReSharper.*
+
+# Node-related folders if npm is used
+node_modules/
+
+# Ignore deployment files
+*.deploy.cmd
+*.deploy-readme.txt
+*.pubxml
+*.pubxml.user
+
+# Ignore secrets files
+secrets.json
+
+# Ignore Mac-specific files
+.DS_Store
+
+# Ignore Windows-specific files
+Thumbs.db
+desktop.ini
+
+# Ignore other unnecessary files
+*.bak
+*.swp
+
+
 # Fody - auto-generated XML schema
 FodyWeavers.xsd

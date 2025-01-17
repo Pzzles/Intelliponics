@@ -1,0 +1,391 @@
+﻿/* Inventory Container Styles */
+.inventory-container {
+    padding: 24px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Search and Filter Section */
+.controls-section {
+    margin-bottom: 24px;
+}
+
+.search-filter-container {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+}
+
+    .search-box i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 10px 10px 10px 35px;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s;
+    }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+.filter-box select {
+    padding: 10px 35px 10px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+}
+
+/* Add Item Button */
+.add-item-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+    .add-item-btn:hover {
+        background-color: #45a049;
+        transform: translateY(-1px);
+    }
+
+/* Inventory Table Styles */
+.inventory-grid {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+    .inventory-table th {
+        background-color: #f8f9fa;
+        padding: 16px;
+        font-weight: 600;
+        color: #495057;
+        text-align: left;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .inventory-table td {
+        padding: 16px;
+        vertical-align: middle;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+.inventory-row:hover {
+    background-color: #f8f9fa;
+}
+
+/* Action Buttons Styles */
+.inventory-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-start;
+}
+
+.action-btn {
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-btn {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.edit-btn {
+    background-color: #e3f2fd;
+    color: #1976d2;
+}
+
+.delete-btn {
+    background-color: #ffebee;
+    color: #d32f2f;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+}
+
+.preview-btn:hover {
+    background-color: #c8e6c9;
+}
+
+.edit-btn:hover {
+    background-color: #bbdefb;
+}
+
+.delete-btn:hover {
+    background-color: #ffcdd2;
+}
+
+/* Status Styles */
+.status-success {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-warning {
+    background-color: #fff3e0;
+    color: #f57c00;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-danger {
+    background-color: #ffebee;
+    color: #d32f2f;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Additional Text Styles */
+.inventory-id {
+    font-family: monospace;
+    color: #6c757d;
+}
+
+.inventory-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+/* Page Title Styles */
+.page-title {
+    margin-bottom: 24px;
+}
+
+    .page-title h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin: 0;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #eef2f7;
+    }
+
+/* Responsive Design */
+/* Large screens (monitor) - above 1024px uses default styles */
+
+/* Medium screens (tablet) - 768px to 1024px */
+@media (max-width: 1024px) {
+    .controls-section {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .search-filter-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .search-box {
+        min-width: 250px;
+        flex: 1;
+    }
+
+    .filter-box {
+        width: auto;
+        min-width: 200px;
+    }
+
+    .add-item-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .inventory-table td {
+        padding: 12px;
+    }
+}
+
+/* Small screens (phone) - below 768px */
+@media (max-width: 768px) {
+    .inventory-container {
+        padding: 12px;
+    }
+
+    .page-title h1 {
+        font-size: 24px;
+        padding-bottom: 12px;
+    }
+
+    .search-filter-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .search-box, .filter-box {
+        width: 100%;
+    }
+
+    /* Convert table to cards for mobile */
+    .inventory-table,
+    .inventory-table tbody,
+    .inventory-table tr {
+        display: block;
+        white-space: normal;
+    }
+
+        .inventory-table thead {
+            display: none; /* Hide table headers on mobile */
+        }
+
+        .inventory-table td {
+            display: flex;
+            padding: 8px 12px;
+            border: none;
+        }
+
+    .inventory-row {
+        margin-bottom: 16px;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        background: white;
+    }
+
+    /* Add labels for mobile view */
+    td.inventory-id::before {
+        content: "ID: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td.inventory-name::before {
+        content: "Name: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td:nth-child(3)::before {
+        content: "Category: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td:nth-child(4)::before {
+        content: "Quantity: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td:nth-child(5)::before {
+        content: "Status: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    /* Hide Last Updated column on mobile */
+    .inventory-table td:nth-child(6),
+    .inventory-table th:nth-child(6) {
+        display: none;
+    }
+
+    /* Adjust the content labels to skip Last Updated */
+    td.inventory-id::before {
+        content: "ID: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td.inventory-name::before {
+        content: "Name: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td:nth-child(3)::before {
+        content: "Category: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td:nth-child(4)::before {
+        content: "Quantity: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    td:nth-child(5)::before {
+        content: "Status: ";
+        font-weight: 600;
+        margin-right: 8px;
+    }
+
+    /* Remove the Last Updated label since column is hidden */
+    td:nth-child(6)::before {
+        display: none;
+    }
+
+    .inventory-actions {
+        justify-content: flex-start;
+        padding-top: 8px;
+    }
+
+    /* Adjust status badges for mobile */
+    .status-success,
+    .status-warning,
+    .status-danger {
+        display: inline-block;
+        margin-left: 8px;
+    }
+
+    /* Improve action buttons touch targets */
+    .action-btn {
+        padding: 10px;
+        margin: 2px;
+    }
+}
