@@ -1,6 +1,1256 @@
-﻿@{
-    ViewData["Title"] = "Hydroponics";
+﻿@* <div class="dashboard-container">
+    <!-- Modern Header -->
+    <div class="dashboard-header">
+        <h1>Hydroponics Control System</h1>
+        <p class="subtitle">Real-time Monitoring Dashboard</p>
+    </div>
+
+    <!-- City Input -->
+    <div class="city-input mb-4">
+        <input type="text" id="cityName" placeholder="Enter city name" class="form-control city-input-field">
+        <button class="btn-glass" onclick="updateCity()">Submit</button>
+    </div>
+
+    <!-- Status Cards -->
+    <div class="status-grid">
+        <div class="glass-card wide">
+            <div class="card-content">
+                <div class="status-info">
+                    <h3>Loadshedding Status</h3>
+                    <p id="loadsheddingCity">City: Not Set</p>
+                    <p>Stage: 2</p>
+                    <p>Next outage: Today 20:00 - 22:30</p>
+                </div>
+                <button class="btn-glass">View Details</button>
+            </div>
+        </div>
+
+        <div class="glass-card wide">
+            <div class="card-content">
+                <div class="status-info">
+                    <h3>Weather Forecast</h3>
+                    <p id="weatherCity">City: Not Set</p>
+                    <p>Sunny, 25°C</p>
+                </div>
+                <button class="btn-glass">View Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monitoring Cards -->
+    <div class="monitor-grid">
+        <div class="glass-card">
+            <div class="card-content">
+                <i class="fas fa-temperature-high"></i>
+                <div class="reading">
+                    <h3>Temperature</h3>
+                    <p class="value">24.5°C</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-content">
+                <i class="fas fa-fill-drip"></i>
+                <div class="reading">
+                    <h3>Solution Level</h3>
+                    <p class="value">85%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-content">
+                <i class="fas fa-water"></i>
+                <div class="reading">
+                    <h3>Water Presence</h3>
+                    <p class="value">Detected</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card">
+            <div class="card-content">
+                <i class="fas fa-sun"></i>
+                <div class="reading">
+                    <h3>Light Intensity</h3>
+                    <p class="value">750 lux</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Controls -->
+    <button class="floating-btn" onclick="openModal()">
+        <i class="fas fa-cog"></i>
+        Manual Controls
+    </button>
+
+    <!-- Control Modal -->
+    <div id="controlModal" class="modal">
+        <div class="modal-content glass-card">
+            <h2>System Controls</h2>
+            <div class="control-grid">
+                <div class="control-item">
+                    <span>Fans</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="control-item">
+                    <span>Pumps</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="control-item">
+                    <span>Shelter</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="control-item">
+                    <span>Lights</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <button class="btn-glass close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <style>
+        .dashboard-container {
+            background: var(--light-color);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-color);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .reading h3 {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .btn-glass {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-glass:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            margin: 10vh auto;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Switch Styles */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* City Input Styles */
+        .city-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .city-input-field {
+            max-width: 300px;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .city-input-field:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+    </style>
+
+    <script>
+        function openModal() {
+            document.getElementById('controlModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('controlModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('controlModal')) {
+                closeModal();
+            }
+        }
+
+        function updateCity() {
+            const city = document.getElementById('cityName').value;
+            document.getElementById('loadsheddingCity').innerText = `City: ${city}`;
+            document.getElementById('weatherCity').innerText = `City: ${city}`;
+        }
+    </script>
+</div> *@
+
+@* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// *@
+
+
+@* 
+@{
+    ViewData["Title"] = "Hydroponics Dashboard";
 }
 
-<h2>Hydroponics</h2>
-<p>Welcome to the Hydroponics page.</p>
+<!-- Include Bootstrap CSS and JS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<div class="container-fluid">
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab" aria-controls="tab1" aria-selected="true">Tab 1</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab" aria-controls="tab2" aria-selected="false">Tab 2</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <!-- Tab 1: Dashboard -->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+            <div class="dashboard-container">
+                <!-- Modern Header -->
+                <div class="dashboard-header">
+                    <h1>Hydroponics Control System</h1>
+                    <p class="subtitle">Real-time Monitoring Dashboard</p>
+                </div>
+
+                <!-- City Input -->
+                <div class="city-input mb-4">
+                    <input type="text" id="cityName" placeholder="Enter city name" class="form-control city-input-field">
+                    <button class="btn-glass" onclick="updateCity()">Submit</button>
+                </div>
+
+                <!-- Status Cards -->
+                <div class="status-grid">
+                    <div class="glass-card wide">
+                        <div class="card-content">
+                            <div class="status-info">
+                                <h3>Loadshedding Status</h3>
+                                <p id="loadsheddingCity">City: Not Set</p>
+                                <p>Stage: 2</p>
+                                <p>Next outage: Today 20:00 - 22:30</p>
+                            </div>
+                            <button class="btn-glass">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card wide">
+                        <div class="card-content">
+                            <div class="status-info">
+                                <h3>Weather Forecast</h3>
+                                <p id="weatherCity">City: Not Set</p>
+                                <p>Sunny, 25°C</p>
+                            </div>
+                            <button class="btn-glass">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monitoring Cards -->
+                <div class="monitor-grid">
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-temperature-high"></i>
+                            <div class="reading">
+                                <h3>Temperature</h3>
+                                <p class="value">24.5°C</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-fill-drip"></i>
+                            <div class="reading">
+                                <h3>Solution Level</h3>
+                                <p class="value">85%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-water"></i>
+                            <div class="reading">
+                                <h3>Water Presence</h3>
+                                <p class="value">Detected</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-sun"></i>
+                            <div class="reading">
+                                <h3>Light Intensity</h3>
+                                <p class="value">750 lux</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Controls -->
+                <button class="floating-btn" onclick="openModal()">
+                    <i class="fas fa-cog"></i>
+                    Manual Controls
+                </button>
+
+                <!-- Control Modal -->
+                <div id="controlModal" class="modal">
+                    <div class="modal-content glass-card">
+                        <h2>System Controls</h2>
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <span>Fans</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-item">
+                                <span>Pumps</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-item">
+                                <span>Shelter</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-item">
+                                <span>Lights</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn-glass close" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Plants Table -->
+        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <div class="container mt-4">
+                <h2>Plants</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Growth Stage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tomato</td>
+                            <td>Fruit</td>
+                            <td>Seedling</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Add</button>
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lettuce</td>
+                            <td>Leafy Green</td>
+                            <td>Mature</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Add</button>
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Strawberry</td>
+                            <td>Fruit</td>
+                            <td>Flowering</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Add</button>
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .dashboard-container {
+            background: var(--light-color);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-color);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .reading h3 {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .btn-glass {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-glass:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            margin: 10vh auto;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Switch Styles */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* City Input Styles */
+        .city-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .city-input-field {
+            max-width: 300px;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .city-input-field:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        /* Tabs Styles */
+        .nav-tabs .nav-link {
+            color: var(--text-color);
+            border: 1px solid transparent;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: var(--light-color);
+            border-color: var(--primary-color) var(--primary-color) transparent;
+        }
+    </style>
+
+    <script>
+        function openModal() {
+            document.getElementById('controlModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('controlModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('controlModal')) {
+                closeModal();
+            }
+        }
+
+        function updateCity() {
+            const city = document.getElementById('cityName').value;
+            document.getElementById('loadsheddingCity').innerText = `City: ${city}`;
+            document.getElementById('weatherCity').innerText = `City: ${city}`;
+        }
+    </script>
+</div> *@
+
+
+@{
+    ViewData["Title"] = "Hydroponics Dashboard";
+}
+
+<!-- Include Bootstrap CSS and JS -->
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<div class="container-fluid">
+    <!-- Tabs Navigation -->
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="dashboard-tab" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="plants-tab" data-toggle="tab" href="#plants" role="tab" aria-controls="plants" aria-selected="false">Plants</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <!-- Tab 1: Dashboard -->
+        <div class="tab-pane fade show active" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
+            <div class="dashboard-container">
+                <!-- Modern Header -->
+                <div class="dashboard-header">
+                    <h1>Hydroponics Control System</h1>
+                    <p class="subtitle">Real-time Monitoring Dashboard</p>
+                </div>
+
+                <!-- City Input -->
+                <div class="city-input mb-4">
+                    <input type="text" id="cityName" placeholder="Enter city name" class="form-control city-input-field">
+                    <button class="btn-glass" onclick="updateCity()">Submit</button>
+                </div>
+
+                <!-- Status Cards -->
+                <div class="status-grid">
+                    <div class="glass-card wide">
+                        <div class="card-content">
+                            <div class="status-info">
+                                <h3>Loadshedding Status</h3>
+                                <p id="loadsheddingCity">City: Not Set</p>
+                                <p>Stage: 2</p>
+                                <p>Next outage: Today 20:00 - 22:30</p>
+                            </div>
+                            <button class="btn-glass">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="glass-card wide">
+                        <div class="card-content">
+                            <div class="status-info">
+                                <h3>Weather Forecast</h3>
+                                <p id="weatherCity">City: Not Set</p>
+                                <p>Sunny, 25°C</p>
+                            </div>
+                            <button class="btn-glass">View Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monitoring Cards -->
+                <div class="monitor-grid">
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-temperature-high"></i>
+                            <div class="reading">
+                                <h3>Temperature</h3>
+                                <p class="value">24.5°C</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-fill-drip"></i>
+                            <div class="reading">
+                                <h3>Solution Level</h3>
+                                <p class="value">85%</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-water"></i>
+                            <div class="reading">
+                                <h3>Water Presence</h3>
+                                <p class="value">Detected</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card">
+                        <div class="card-content">
+                            <i class="fas fa-sun"></i>
+                            <div class="reading">
+                                <h3>Light Intensity</h3>
+                                <p class="value">750 lux</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Manual Controls -->
+                <button class="floating-btn" onclick="openModal()">
+                    <i class="fas fa-cog"></i>
+                    Manual Controls
+                </button>
+
+                <!-- Control Modal -->
+                <div id="controlModal" class="modal">
+                    <div class="modal-content glass-card">
+                        <h2>System Controls</h2>
+                        <div class="control-grid">
+                            <div class="control-item">
+                                <span>Fans</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-item">
+                                <span>Pumps</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-item">
+                                <span>Shelter</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="control-item">
+                                <span>Lights</span>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <button class="btn-glass close" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Plants Table -->
+        <div class="tab-pane fade" id="plants" role="tabpanel" aria-labelledby="plants-tab">
+            <div class="container mt-4">
+                <h2>Plants</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Growth Stage</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tomato</td>
+                            <td>Fruit</td>
+                            <td>Seedling</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Add</button>
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lettuce</td>
+                            <td>Leafy Green</td>
+                            <td>Mature</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Add</button>
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Strawberry</td>
+                            <td>Fruit</td>
+                            <td>Flowering</td>
+                            <td>
+                                <button class="btn btn-success btn-sm">Add</button>
+                                <button class="btn btn-danger btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .dashboard-container {
+            background: var(--light-color);
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-color);
+        }
+
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-color);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .monitor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .reading h3 {
+            color: var(--text-color);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .btn-glass {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-glass:hover {
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .floating-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            margin: 10vh auto;
+        }
+
+        .control-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Switch Styles */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: var(--accent-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* City Input Styles */
+        .city-input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .city-input-field {
+            max-width: 300px;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .city-input-field:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            outline: none;
+        }
+
+        /* Tabs Styles */
+        .nav-tabs .nav-link {
+            color: var(--text-color);
+            border: 1px solid transparent;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            background-color: var(--light-color);
+            border-color: var(--primary-color) var(--primary-color) transparent;
+        }
+    </style>
+
+    <script>
+        function openModal() {
+            document.getElementById('controlModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('controlModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('controlModal')) {
+                closeModal();
+            }
+        }
+
+        function updateCity() {
+            const city = document.getElementById('cityName').value;
+            document.getElementById('loadsheddingCity').innerText = `City: ${city}`;
+            document.getElementById('weatherCity').innerText = `City: ${city}`;
+        }
+    </script>
+</div>
