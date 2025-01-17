@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Inventory";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/inventory.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<main class="content">
+    <div class="inventory-container">
+        <div class="page-title">
+            <h1>Inventory Management</h1>
+        </div>
+
+        <div class="controls-section">
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search inventory..." id="inventory-search" oninput="filterInventory()">
+                </div>
+                <div class="filter-box">
+                    <select id="inventory-category-filter" onchange="filterInventory()">
+                        <option value="all">All Categories</option>
+                        <option value="seeds">Seeds</option>
+                        <option value="fertilizer">Fertilizers</option>
+                        <option value="tools">Tools</option>
+                        <option value="equipment">Equipment</option>
+                    </select>
+                </div>
+            </div>
+            <button id="openModalBtn" class="add-item-btn">
+                <i class="fas fa-plus"></i> Add New Item
+            </button>
+        </div>
+        <div class="controls-section">
+            <button onclick="performInventoryAction('update', { ProductID: 1, Name: 'Updated Product', UnitPrice: 12.99, SupplierID: 1, CategoryID: 1, SubCategoryID: 1, Discount: 0, UnitInStock: 100, ProductAvailable: true, ShortDescription: 'An updated product', PicturePath: 'path/to/image', Note: 'Some notes' })">Update Product</button>
+            <button onclick="performInventoryAction('delete', { ProductID: 1 })">Delete Product</button>
+        </div>
+        <div>
+            <label for="itemsPerPage">Items per page:</label>
+            <select id="itemsPerPage" onchange="changeItemsPerPage()">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+            </select>
+        </div>
+        <div class="inventory-grid">
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-list">
+                    <!-- Dummy data -->
+                </tbody>
+            </table>
+            <div id="pagination-controls">
+                <button onclick="prevPage()">Previous</button>
+                <span id="currentPage">1</span>
+                <button onclick="nextPage()">Next</button>
+            </div>
+        </div>
+        <div id="no-items-message" style="display: none;">
+            <p>No items found</p>
+        </div>
+    </div>
+</main>
+
+
+@Html.Partial("CreateProductModal")
+
+<script src="~/js/modal.js"></script>

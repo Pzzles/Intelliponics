@@ -1,0 +1,70 @@
+﻿<link rel="stylesheet" href="~/css/modal.css" />
+
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create Product</h2>
+        <form id="createProductForm">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter product name" required>
+            </div>
+            <div class="form-group">
+                <label for="unitPrice">Unit Price:</label>
+                <input type="number" step="0.01" id="unitPrice" name="unitPrice" placeholder="Enter unit price" required>
+            </div>
+            <div class="form-group">
+                <label for="discount">Discount:</label>
+                <input type="number" step="0.01" id="discount" name="discount" placeholder="Enter discount">
+            </div>
+            <div class="form-group">
+                <label for="unitInStock">Unit In Stock:</label>
+                <input type="number" id="unitInStock" name="unitInStock" placeholder="Enter units in stock" required>
+            </div>
+            <div class="form-group">
+                <label for="supplierId">Supplier:</label>
+                <select id="supplierId" name="supplierId" required>
+                    <option value="">Select supplier</option>
+                    <option value=1>Supplier 1</option>
+                    <option value=2>Supplier 2</option>
+                    <option value=3>Supplier 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="categoryId">Category:</label>
+                <select id="categoryId" name="categoryId" required>
+                    <option value="">Select category</option>
+                    <option value=1>Category 1</option>
+                    <option value=2>Category 2</option>
+                    <option value=3>Category 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subCategoryId">SubCategory:</label>
+                <select id="subCategoryId" name="subCategoryId" required>
+                    <option value="">Select subcategory</option>
+                    <option value=1>SubCategory 1</option>
+                    <option value=2>SubCategory 2</option>
+                    <option value=3>SubCategory 3</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="productAvailable">Product Available:</label>
+                <input type="checkbox" id="productAvailable" name="productAvailable" checked>
+            </div>
+            <div class="form-group">
+                <label for="shortDescription">Short Description:</label>
+                <textarea id="shortDescription" name="shortDescription" placeholder="Enter short description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="picturePath">Picture Path:</label>
+                <input type="text" id="picturePath" name="picturePath" placeholder="Enter picture path">
+            </div>
+            <div class="form-group">
+                <label for="note">Note:</label>
+                <textarea id="note" name="note" placeholder="Enter note"></textarea>
+            </div>
+            <button type="submit" id="submitModalBtn">Submit</button>
+        </form>
+    </div>
+</div>

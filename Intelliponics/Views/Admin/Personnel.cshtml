@@ -1,0 +1,97 @@
+﻿
+@{
+    ViewData["Title"] = "Personnel";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/personnel.css" />
+</head>
+
+<main class="content">
+    <div class="personnel-container">
+        <!-- Add page title -->
+        <div class="page-title">
+            <h1>Personnel Management</h1>
+        </div>
+
+        <div class="controls-section">
+            <div class="search-filter-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search personnel..." id="personnel-search">
+                </div>
+                <div class="filter-box">
+                    <select id="personnel-type-filter">
+                        <option value="all">All Types</option>
+                        <option value="manager">Managers</option>
+                        <option value="staff">Staff</option>
+                        <option value="intern">Interns</option>
+                    </select>
+                </div>
+            </div>
+            <button class="add-person-btn">
+                <i class="fas fa-plus"></i> Add New Person
+            </button>
+        </div>
+        <div class="personnel-grid">
+            <table class="personnel-table">
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="personnel-list">
+                    <!-- Hardcoded dummy data -->
+                    <tr class="personnel-row">
+                        <td class="personnel-id">1</td>
+                        <td class="personnel-name">John Doe</td>
+                        <td class="personnel-email">john.doe@example.com</td>
+                        <td class="personnel-phone">123-456-7890</td>
+                        <td class="personnel-role">Manager</td>
+                        <td class="personnel-actions">
+                            <button class="action-btn preview-btn" title="Preview">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn chat-btn" title="Chat">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                            <button class="action-btn edit-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="personnel-row">
+                        <td class="personnel-id">2</td>
+                        <td class="personnel-name">Jane Smith</td>
+                        <td class="personnel-email">jane.smith@example.com</td>
+                        <td class="personnel-phone">987-654-3210</td>
+                        <td class="personnel-role">Staff</td>
+                        <td class="personnel-actions">
+                            <button class="action-btn preview-btn" title="Preview">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn chat-btn" title="Chat">
+                                <i class="fas fa-comment"></i>
+                            </button>
+                            <button class="action-btn edit-btn" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete-btn" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</div>
